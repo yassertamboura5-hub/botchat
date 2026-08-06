@@ -5,60 +5,54 @@ export default async function handler(req, res) {
   }
 
   const { messages } = req.body
-  const apiKey = process.env.HUGGINGFACE_API_KEY
+  const apiKey = process.env.OPENAI_API_KEY
+  const model = process.env.OPENAI_MODEL || 'gpt-4o-mini'
 
   if (!apiKey) {
     return res.status(500).json({
-      error: 'HUGGINGFACE_API_KEY not set on server'
+      error: 'OPENAI_API_KEY not set on server'
     })
   }
 
   try {
-    const lastMessage =
-      messages?.[messages.length - 1]?.content || "Bonjour"
-
-    const r = await fetch(
-      'https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct',
+    const response = await fetch(
+      'https://api.openai.com/v1/chat/completions',
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${apiKey}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          inputs: lastMessage,
-          parameters: {
-            max_new_tokens: 512,
-            temperature: 0.7
-          }
+          model,
+          messages,
+          max_tokens: 512,
+          temperature: 0.7
         })
       }
     )
 
-    if (!r.ok) {
-      const errText = await r.text()
-      console.error('Hugging Face error:', errText)
+    if (!response.ok) {
+      const errorText = await response.text()
 
       return res.status(502).json({
-        error: 'Erreur de l API modèle',
-        details: errText
+        error: 'Erreur API OpenAI',
+        details: errorText
       })
     }
 
-    const data = await r.json()
+    const data = await response.json()
 
-    const reply =
-      data?.[0]?.generated_text ||
-      "Je n'ai pas réussi à répondre."
-
-    return res.status(200).json({ reply })
+    return res.status(200).json({
+      reply: data.choices[0].message.content
+    })
 
   } catch (err) {
-    console.error('Server error:', err)
+    console.error(err)
 
     return res.status(500).json({
       error: 'Erreur serveur',
       details: err.message
     })
   }
-}
+          }
