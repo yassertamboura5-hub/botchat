@@ -1,0 +1,48 @@
+:root{
+  --bg:#0f172a;
+  --card:#0b1220;
+  --accent:#60a5fa;
+  --text:#e6eef8;
+  --muted:#94a3b8;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+body{background:linear-gradient(180deg,#021028 0%, #08122a 100%);color:var(--text);display:flex;align-items:center;justify-content:center;padding:24px}
+
+.app{width:100%;max-width:640px;background:linear-gradient(180deg, rgba(255,255,255,0.03), transparent);padding:20px;border-radius:12px;box-shadow:0 6px 24px rgba(2,6,23,0.6)}
+h1{margin:0 0 12px;font-size:1.6rem}
+
+.todo-form{display:flex;gap:8px;margin-bottom:14px}
+.todo-form input{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:var(--text)}
+.todo-form button{padding:10px 12px;border-radius:8px;border:0;background:var(--accent);color:#03203b;cursor:pointer;font-weight:600}
+
+.controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:12px;flex-wrap:wrap}
+.filters{display:flex;gap:6px}
+.filter{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:6px 10px;border-radius:8px;cursor:pointer}
+.filter.active{border-color:var(--accent);color:var(--accent);font-weight:600}
+.actions button{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);padding:6px 8px;border-radius:8px;cursor:pointer}
+
+.todo-list{list-style:none;padding:0;margin:0}
+.todo-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);margin-bottom:8px;background:var(--card)}
+.todo-item .text{flex:1;color:var(--text)}
+.todo-item.completed .text{opacity:0.6;text-decoration:line-through}
+.todo-item button{background:transparent;border:0;color:var(--muted);cursor:pointer;padding:6px;border-radius:6px}
+.todo-item .edit{color:var(--accent)}
+
+.footer{margin-top:12px;color:var(--muted);font-size:0.95rem}
+
+/* Inline edit styles */
+.todo-item .text.editing,
+.todo-item .text[contenteditable="true"] {
+  outline: 2px solid rgba(96,165,250,0.18);
+  background: rgba(255,255,255,0.02);
+  padding: 6px;
+  border-radius: 6px;
+}
+
+/* Small screens */
+@media (max-width:480px){
+  .todo-form button{padding:10px}
+  .filter{padding:6px}
+}
