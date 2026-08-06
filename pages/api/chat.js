@@ -5,8 +5,8 @@ export default async function handler(req, res) {
   }
 
   const { messages } = req.body
-  const apiKey = process.env.OPENAI_API_KEY=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
-  const model = process.env.OPENAI_MODEL || 'gpt-4'
+  const apiKey = process.env.OPENAI_API_KEY
+  const model = process.env.OPENAI_MODEL || 'gpt
 
   // Si la clé manque : en dev on renvoie un mock pour tester l'UI, sinon erreur 500 en prod
   if (!apiKey) {
