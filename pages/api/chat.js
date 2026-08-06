@@ -8,20 +8,21 @@ export default async function handler(req, res) {
   const apiKey = process.env.HUGGINGFACE_API_KEY
 
   if (!apiKey) {
-    return res.status(500).json({ 
-      error: 'HUGGINGFACE_API_KEY not set on server' 
+    return res.status(500).json({
+      error: 'HUGGINGFACE_API_KEY not set on server'
     })
   }
 
   try {
-    const lastMessage = messages?.[messages.length - 1]?.content || "Bonjour"
+    const lastMessage =
+      messages?.[messages.length - 1]?.content || "Bonjour"
 
     const r = await fetch(
-      'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2',
+      'https://api-inference.huggingface.co/models/Qwen/Qwen2.5-7B-Instruct',
       {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${apiKey}`,
+          Authorization: `Bearer ${apiKey}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -36,7 +37,8 @@ export default async function handler(req, res) {
 
     if (!r.ok) {
       const errText = await r.text()
-      console.error('Hugging Face error', errText)
+      console.error('Hugging Face error:', errText)
+
       return res.status(502).json({
         error: 'Erreur de l API modèle',
         details: errText
@@ -52,7 +54,8 @@ export default async function handler(req, res) {
     return res.status(200).json({ reply })
 
   } catch (err) {
-    console.error(err)
+    console.error('Server error:', err)
+
     return res.status(500).json({
       error: 'Erreur serveur',
       details: err.message
