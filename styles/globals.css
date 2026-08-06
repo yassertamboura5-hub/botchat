@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* petites règles globales */
+html, body, #__next {
+  height: 100%;
+}
+body {
+  @apply bg-slate-50 text-slate-800;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}

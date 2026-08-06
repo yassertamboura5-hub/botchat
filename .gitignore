@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.env.local
+.DS_Store
+.vscode/
+.vercel/
+
+# Optional lock files
+package-lock.json
+yarn.lock
