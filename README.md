@@ -6,8 +6,10 @@ Ce dépôt contient un MVP pour un chatbot utilisant Next.js + Tailwind CSS.
    npm install
 
 2) Configurer la clé API (dans .env.local)
-   OPENAI_API_KEY=sk-...
-   (optionnel) OPENAI_MODEL=gpt-4
+   HCNSEC_API_KEY=sk-...
+   (optionnel) HCNSEC_MODEL=deepseek-v4
+
+   S'inscrire : https://api.hcnsec.cn/sign-up?aff=Auq5
 
 3) Lancer en local
    npm run dev
@@ -15,7 +17,7 @@ Ce dépôt contient un MVP pour un chatbot utilisant Next.js + Tailwind CSS.
 
 4) Déployer
    - Pousser sur GitHub puis déployer sur Vercel.
-   - Dans Vercel, configure la variable d'environnement `OPENAI_API_KEY` pour la production.
+   - Dans Vercel, configure la variable d'environnement `HCNSEC_API_KEY` pour la production.
 
 Sécurité :
 - Ne commit jamais ta clé API.
@@ -25,7 +27,7 @@ Sécurité :
 
 Docker
 
-J'ai ajouté des fichiers Docker (Dockerfile multi-stage, .dockerignore) et des fichiers d'orchestration : `docker-compose.yml` pour la production et `docker-compose.dev.yml` pour le développement.
+J'ai ajouté des fichiers Docker (Dockerfile multi-stage, .dockerignore) et des fichiers d'orchestration : `docker-compose.yml` pour la production et `docker-compose.dev.yml` pour le développemen[...]
 
 Pré-requis
 - Docker et (optionnel) Docker Compose installés.
@@ -33,10 +35,10 @@ Pré-requis
 
 Créer le fichier d'environnement (NE PAS COMMIT)
 
-- Copier l'exemple et insérer votre clé OpenAI :
+- Copier l'exemple et insérer votre clé HCNSEC :
   - Linux/macOS :
     cp .env.local.example .env.local
-    # puis éditez .env.local et remplacez OPENAI_API_KEY=sk-... par votre clé
+    # puis éditez .env.local et remplacez HCNSEC_API_KEY=sk-... par votre clé
   - Windows PowerShell :
     copy .env.local.example .env.local
 
@@ -64,8 +66,7 @@ Développement (hot-reload)
 
 Notes et dépannage
 - .env.local est exclu par .dockerignore ; ne le commitez pas.
-- Le Dockerfile utilise maintenant `npm install` (pas `npm ci`) pour éviter l'obligation d'avoir `package-lock.json`. Si vous préférez utiliser `npm ci`, générez et commitez `package-lock.json` avec `npm install` localement.
-- Si l'app signale "missing OPENAI_API_KEY", vérifiez que `.env.local` est présent à la racine et que le conteneur reçoit bien la variable (via `--env-file` ou `--env`).
+- Si l'app signale "missing HCNSEC_API_KEY", vérifiez que `.env.local` est présent à la racine et que le conteneur reçoit bien la variable (via `--env-file` ou `--env`).
 - Voir les logs : `docker logs -f <container-id>` ou `docker-compose logs -f`.
 
 Si vous voulez, je peux :
