@@ -5,18 +5,21 @@ export default async function handler(req, res) {
   }
 
   const { messages } = req.body
-  const apiKey = process.env.OPENAI_API_KEY
-  const model = process.env.OPENAI_MODEL || 'gpt-4o-mini'
+  const apiKey = process.env.HCNSEC_API_KEY || process.env.OPENAI_API_KEY
+  const useHcnsec = !!process.env.HCNSEC_API_KEY
+  const model = (useHcnsec ? process.env.HCNSEC_MODEL : process.env.OPENAI_MODEL) || (useHcnsec ? 'deepseek-v4' : 'gpt-4o-mini')
 
   if (!apiKey) {
     return res.status(500).json({
-      error: 'OPENAI_API_KEY not set on server'
+      error: 'API key not set on server'
     })
   }
 
+  const endpoint = useHcnsec ? 'https://api.hcnsec.cn/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions'
+
   try {
     const response = await fetch(
-      'https://api.openai.com/v1/chat/completions',
+      endpoint,
       {
         method: 'POST',
         headers: {
@@ -36,7 +39,7 @@ export default async function handler(req, res) {
       const errorText = await response.text()
 
       return res.status(502).json({
-        error: 'Erreur API OpenAI',
+        error: useHcnsec ? 'Erreur API HCNSEC' : 'Erreur API OpenAI',
         details: errorText
       })
     }
@@ -44,7 +47,7 @@ export default async function handler(req, res) {
     const data = await response.json()
 
     return res.status(200).json({
-      reply: data.choices[0].message.content
+      reply: data.choices?.[0]?.message?.content ?? null
     })
 
   } catch (err) {
@@ -55,4 +58,4 @@ export default async function handler(req, res) {
       details: err.message
     })
   }
-          }
+}
